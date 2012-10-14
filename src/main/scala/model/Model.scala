@@ -7,12 +7,11 @@ import scala.collection.mutable.HashMap
  * */
 
 object Model{
-	//the character ' is present since it is useful when detecting languages
+	//the character ' is not present since it is useful when detecting languages
 	val punctuation=".,;:-_!?$%&()[]{}<>=@#*+\\/\"~`\n\r\t";
 }
 class Model(val n:Int,val language:String) {
-  if (n<1) throw new InvalidNGramSizeException("The N-Gram size has to be greater than 0");
-	//val n=ne
+  if (n<1) throw new InvalidSampleSizeException("The sample size has to be greater than 0");
 	var ignorePunctuation:Boolean=true
 			private var frequencies=new HashMap[String, Int]
 					/**
@@ -21,5 +20,5 @@ class Model(val n:Int,val language:String) {
 					def add(s:String)=frequencies.put(s, frequencies.getOrElse(s, 0)+1)
 }
 
-class InvalidNGramSizeException(message:String) extends Throwable{
+class InvalidSampleSizeException(message:String) extends Throwable{
 }

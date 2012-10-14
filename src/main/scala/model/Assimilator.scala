@@ -5,7 +5,7 @@ import java.io.File
 
 object Assimilator {
 	def assimilateURL(URL:String,m:Model)={
-		assimilateString(Source.fromURL(URL).getLines.mkString.toLowerCase().replaceAll("""<(?!\/?a(?=>|\s.*>))\/?.*?>""", ""),m)	  
+		assimilateString(Source.fromURL(URL).getLines.mkString.toLowerCase().replaceAll("""<[^<>]+>""", ""),m)	  
 	}
 
 	def assimilateFile(path:String, m:Model)={
@@ -26,20 +26,21 @@ object Assimilator {
 	def assimilateString(s:String,m:Model)={
 		var preparing:String="N"*m.n
 				for(c<-s){
+				  println(preparing)
 					if(c.isDigit){
-						preparing=preparing.substring(1, preparing.length()-1)+'D'
+						preparing=preparing.substring(1)+'D'
 								m.add(preparing)
 					}
 					else
 						if(!m.ignorePunctuation || !(Model.punctuation.contains(c))){
-							preparing=preparing.substring(1, preparing.length()-1)+c
+							preparing=preparing.substring(1)+c
 									m.add(preparing)		
 						}
 				}
 
 	//we need to add some N-grams also for ending strings
 	for(k<-1 to m.n){
-		preparing=preparing.substring(1, preparing.length()-1)+'N'
+		preparing=preparing.substring(1)+'N'
 				m.add(preparing)
 	}
 	}

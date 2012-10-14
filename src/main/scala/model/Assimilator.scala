@@ -26,7 +26,6 @@ object Assimilator {
 	def assimilateString(s:String,m:Model)={
 		var preparing:String="N"*m.n
 				for(c<-s){
-				  println(preparing)
 					if(c.isDigit){
 						preparing=preparing.substring(1)+'D'
 								m.add(preparing)

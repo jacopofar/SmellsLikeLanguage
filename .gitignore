@@ -13,6 +13,6 @@ project/plugins/project/
 .cache
 .classpath
 .project
-.setting/
+.settings/
 # Scala-IDE specific
 .scala_dependencies

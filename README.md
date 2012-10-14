@@ -8,14 +8,16 @@ It can assimilate text in three ways:
 *From folders of text files, recursively
 *From URLs, downloading webpages and extracting text
 
-The
 
 
 TO DO
 =====
 Write the code to:
+
 *use the model to calculate the probability of a string
+
 *do some tests
+
 *save and load the model to a file
 
 

@@ -1,4 +1,4 @@
-package model
+package main.scala.jacopofar.smellslikelanguage
 
 import scala.collection.mutable.HashMap
 
@@ -24,7 +24,7 @@ class Model(val n:Int,val language:String) {
 				def square(x: Int) = { x * x }
 				squareSum-=square(frequencies.getOrElse(s, 0))
 						squareSum+=square(frequencies.getOrElse(s, 0)+1)
-						frequencies.put(s, frequencies.getOrElse(s, 0)+1)
+						frequencies+= s->(frequencies.getOrElse(s, 0)+1)
 
 			}
 			private var squareSum:Double=0
@@ -33,15 +33,11 @@ class Model(val n:Int,val language:String) {
 				def similarity(o:Model):Double={
 			
 			  (if(frequencies.size<o.frequencies.size)
-							frequencies.keys.map(s=>frequencies.get(s).get*o.frequencies.getOrElse(s, 0)).reduce((a,b)=>a+b)
+							frequencies.keys.map(s=>frequencies(s)*o.frequencies.getOrElse(s, 0)).reduce((a,b)=>a+b)
 							else
-								o.frequencies.keys.map(s=>o.frequencies.get(s).get*frequencies.getOrElse(s, 0)).reduce((a,b)=>a+b)
+								o.frequencies.keys.map(s=>o.frequencies(s)*frequencies.getOrElse(s, 0)).reduce((a,b)=>a+b)
 								)/math.sqrt(o.squareSum*squareSum)
 				}
 }
 
-
-
-
-class InvalidSampleSizeException(message:String) extends Throwable{
-}
+class InvalidSampleSizeException(message:String) extends Throwable{}

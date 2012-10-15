@@ -1,4 +1,4 @@
-package model
+package main.scala.jacopofar.smellslikelanguage
 
 import scala.io.Source
 import java.io.File

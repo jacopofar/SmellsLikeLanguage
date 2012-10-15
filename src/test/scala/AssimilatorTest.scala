@@ -1,8 +1,10 @@
 package test.scala
 
 import org.scalatest.FunSuite
-import model.Model
-import model.Assimilator
+import main.scala.jacopofar.smellslikelanguage.Model
+import main.scala.jacopofar.smellslikelanguage.Assimilator
+import main.scala.jacopofar.smellslikelanguage.Recognizer
+
 
 
 class AssimilatorTest extends FunSuite {
@@ -23,7 +25,6 @@ class CosineTest extends FunSuite{
 	Assimilator.assimilateURL("http://it.wikipedia.org/wiki/Fisarmonica", iModel)
 
 	test("compare a page of wikipedia") {
-
 
 		val c=new Model(3,"checkme")
 		Assimilator.assimilateURL("http://it.wikipedia.org/wiki/Idrogeno", c)
@@ -65,6 +66,13 @@ class CosineTest extends FunSuite{
 				assert((si2<sg2))
 		
 	}
+	
+	test("recognize with the recognizer") {
+	  val r=new Recognizer(List(gModel,iModel))
+	  val smi=new Model(3,"italian proverb")
+	  println(r.ranking(smi))
+	}
+	
 
 }
 

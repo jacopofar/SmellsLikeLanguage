@@ -20,13 +20,13 @@ class Model(val n:Int,val language:String) {
 					 * It also update squareSum, the square of the sum of counters used when calculating cosine similarity
 					 * This approach make faster calculating the cosine and slower constructing the model
 					 * */
-					def add(s:String)={
+				def add(s:String)={
 				def square(x: Int) = { x * x }
 				squareSum-=square(frequencies.getOrElse(s, 0))
 						squareSum+=square(frequencies.getOrElse(s, 0)+1)
 						frequencies+= s->(frequencies.getOrElse(s, 0)+1)
-
 			}
+			def +=(s:String)=add(s:String)
 			private var squareSum:Double=0
 
 

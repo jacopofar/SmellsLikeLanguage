@@ -32,7 +32,7 @@ class CosineTest extends FunSuite{
 
 		val si=iModel.similarity(c);
 		val sg=gModel.similarity(c)
-		assert((si>sg))
+				assert((si>sg))
 	}
 
 	test("compare simple statements") {
@@ -52,7 +52,7 @@ class CosineTest extends FunSuite{
 				assert((si1>sg1))
 				println("----------")
 				val si2=iModel.similarity(smg);
-				val sg2=gModel.similarity(smg)
+		val sg2=gModel.similarity(smg)
 
 
 				println("German proverb in Italian:"+si2)
@@ -72,7 +72,6 @@ class CosineTest extends FunSuite{
 		assert("japanese"==r.identifiedLanguage(Assimilator.assimilateString("来るものは拒まず去るものは追わず", new Model(3,"japanese proverb"))))
 		assert("italian"==r.identifiedLanguage(Assimilator.assimilateString("Tanto va la gatta al lardo che ci lascia lo zampino", new Model(3,"italian proverb"))))
 		assert("chinese"==r.identifiedLanguage(Assimilator.assimilateString("十類煩惱：一兇、二吉、三毒、四倒、五蘊、六入、七識、八邪、九結、十惡", new Model(3,"chinese proverb"))))
-		//println(Source.fromURL("https://ar.wikipedia.org/wiki/").getLines.mkString.replaceAll("""<[^<>]+>""", ""))
 	}
 
 

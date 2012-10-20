@@ -2,6 +2,7 @@ package main.scala.jacopofar.smellslikelanguage
 
 import scala.collection.mutable.HashMap
 import scala.xml.XML
+import scala.io.Source
 
 /**
  * Contains a model for a language.
@@ -16,43 +17,57 @@ import scala.xml.XML
 
 object Model{
 	//the character ' is not present since it is useful when detecting languages
-	val punctuation=".,;:-_!?$%&()[]{}<>=@#*+\\/\"~`\n\r\t";
+	val punctuation=".,;:-_!?$%&()“[]{}<>=@#*+\\/\"~`\n\r\t";
+	def fromXLMfile(fn:String):Model=fromXMLString(Source.fromFile(fn).mkString)
+	def fromXMLString(xs:String)={
+		val xml=XML.loadString(xs)
+		var m=new Model((xml\\"@sampleSize").text.toInt,(xml\\"@language").text)
+		m.squareSum=BigInt((xml\\"@squareSum").text)
+		for(val sample <- xml\\ "sample") {
+			m.frequencies+= sample.text->(sample\\"@count").text.toInt
+		}
+		m
+	}
 }
 class Model(val n:Int,val language:String) {
 	if (n<1) throw new InvalidSampleSizeException("The sample size has to be greater than 0");
 	var ignorePunctuation:Boolean=true
 			private var frequencies=new HashMap[String, Int]
-					private var numSamples:Int=0
-					private var squareSum:Double=0
-					/**
-					 * Increase of 1 the counter of a string presence, creating it if nonexistent
-					 * It also update squareSum, the square of the sum of counters used when calculating cosine similarity
-					 * */
-					def add(s:String)={
+			//squareSum and quickSquare contain the same value in different formats
+			//squareSum is for XML record and retrieve, quickSquare for fast calculation
+			private var quickSquare:Double=0
+			private var squareSum:BigInt=0
+			/**
+			 * Increase of 1 the counter of a string presence, creating it if nonexistent
+			 * It also update squareSum, the square of the sum of counters used when calculating cosine similarity
+			 * */
+			def add(s:String)={
 				def square(x: Int) = { x * x }
 				squareSum-=square(frequencies.getOrElse(s, 0))
-						squareSum+=square(frequencies.getOrElse(s, 0)+1)
-						frequencies+= s->(frequencies.getOrElse(s, 0)+1)
+				squareSum+=square(frequencies.getOrElse(s, 0)+1)
+				frequencies+= s->(frequencies.getOrElse(s, 0)+1)
+				quickSquare=squareSum.toDouble
 			}
 			def +=(s:String)=add(s:String)
-					def size:Int=frequencies.size
+			
+			def size:Int=frequencies.size
 
 
-					def similarity(o:Model):Double={
+			def similarity(o:Model):Double=
 				(if(frequencies.size<o.frequencies.size)
 					frequencies.keys.map(s=>frequencies(s)*o.frequencies.getOrElse(s, 0)).reduce((a,b)=>a+b)
 					else
 						o.frequencies.keys.map(s=>o.frequencies(s)*frequencies.getOrElse(s, 0)).reduce((a,b)=>a+b)
-						)/math.sqrt(o.squareSum*squareSum)
-			}
+				)/math.sqrt(o.quickSquare*quickSquare)
+			
 
-			override def toString()="Model of "+language+" [sample size: "+n+" #samples:"+frequencies.size+"]"
+			override def toString()="Model of "+language+" [sample size:"+n+" #samples:"+frequencies.size+"] sum of squares"+quickSquare+" ~ "+squareSum
 
 					def toXML()=
 				<model language={this.language} sampleSize={this.n.toString} squareSum={squareSum.toString}>
-				{frequencies.keys.map((h:String) => <sample size={this.frequencies(h).toString}>{h}</sample> )}
+				{frequencies.keys.map((h:String) => <sample count={this.frequencies(h).toString}>{h}</sample> )}
 				</model>
-			
+
 }
 
 class InvalidSampleSizeException(message:String) extends Throwable{}

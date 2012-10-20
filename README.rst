@@ -35,6 +35,7 @@ Usage
 You can load the provided model (**TODO - REMOVE ME AFTER, MAIL ME IF I FORGOT**) with...
 
 To recognize a language you have to:
+
 1. Create an instance of *Model*, specifying sample size and name of the language
 	val m=new Model(3,"Italian")
 	val g=new Model(3,"German")

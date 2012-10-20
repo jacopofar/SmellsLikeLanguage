@@ -4,6 +4,7 @@ Smells Like Language
 A Scala language identifier. Reads text in different human languages (or other languages), generate a model and uses it to detect the language of a new text.
 
 The comparison of two models is based on cosine similarity of the two vectors containing all the samples of analyzed text of a specified size.
+
 It can assimilate text in three ways:
 
 * from text files
@@ -13,16 +14,20 @@ It can assimilate text in three ways:
 
 Installation
 ============
-The only dependency is Scalatest for tests, and of course the Scala library, it was created with Scala 2.9.2 and may not work with older versions
+The only dependency is Scalatest for tests, and of course the Scala library, it was created with Scala 2.9.2 and may not work with older versions.
+
 Download the package and run the command *sbt test* to test the application. It will download some pages from Wikipedia to build language models, so **you'll need an internet connection to run tests**.
 
 Training
 ========
 When creating the model, you have to choose a sample size. A sample of 1 or 2 is sufficient for most of the cases, but increasing it you may obtain more accuracy.
+
 Thought, be careful to increase the training dataset (e.g.: give it more webpages or text files), especially when training for Chinese or Japanese since ideograms to manage the amount of possible character combinations.
 
 **Programming languages:**
-The program can be used to recognize programming or markup languages, but consider that by default it ignores punctuation as defined in *Model.punctuation*. So, when comparing non-human languages, change *Model.ignorePunctuation* value before training. Consider that this value is used by the assimilator, so you can change it every time to decide  wheter or not to assimilate punctuation signs. If not, punctuation character will be ignored.
+The program can be used to recognize programming or markup languages, but consider that by default it ignores punctuation as defined in *Model.punctuation*.
+
+So, when comparing non-human languages, change *Model.ignorePunctuation* value before training. Consider that this value is used by the assimilator, so you can change it every time to decide  wheter or not to assimilate punctuation signs. If not, punctuation character will be ignored.
 
 **digits:**
 The program ignores digit values, converting any digit (0-9) to the digit 1.

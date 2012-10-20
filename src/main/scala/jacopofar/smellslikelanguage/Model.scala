@@ -50,7 +50,7 @@ class Model(val n:Int,val language:String) {
 
 					def toXML()=
 				<model language={this.language} sampleSize={this.n.toString} squareSum={squareSum.toString}>
-				frequencies.keys.map((h:String) => <sample size={this.frequencies(h)}>{h}</sample> )
+				{frequencies.keys.map((h:String) => <sample size={this.frequencies(h).toString}>{h}</sample> )}
 				</model>
 			
 }

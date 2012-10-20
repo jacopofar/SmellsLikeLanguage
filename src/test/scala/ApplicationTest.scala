@@ -8,7 +8,7 @@ import scala.io.Source
 
 
 
-class AssimilatorTest extends FunSuite {
+class ApplicationTest extends FunSuite {
 
 	test("assimilate URLs") {
 		val aModel=new Model(5,"german")

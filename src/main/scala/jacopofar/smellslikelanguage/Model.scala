@@ -1,9 +1,17 @@
 package main.scala.jacopofar.smellslikelanguage
 
 import scala.collection.mutable.HashMap
+import scala.xml.XML
 
 /**
- * Contains a model for a language
+ * Contains a model for a language.
+ * A model is made by the count of all the substrings of assimilated text of a specified size N>0
+ * A model is indifferent to different digits in texts, just to their presence (it transforms each digit in 0)
+ * By default punctuation is ignored, but is possible to use it, for example to identify programming languages
+ * Two models are compared using cosine similarity: the similarity between samples frequency vector is a number between 0 and 1:
+ * the more two texts tend to have the same substring frequencies, the more they are likely to be in the same language.
+ * By increasing the substring size is possible to increase the accuracy but is better to use a bigger dataset, especially when ideograms are involved
+ * With n=3 one or two long articles from Wikipedia should fit
  * */
 
 object Model{
@@ -39,6 +47,12 @@ class Model(val n:Int,val language:String) {
 			}
 
 			override def toString()="Model of "+language+" [sample size: "+n+" #samples:"+frequencies.size+"]"
+
+					def toXML()=
+				<model language={this.language} sampleSize={this.n.toString} squareSum={squareSum.toString}>
+				frequencies.keys.map((h:String) => <sample size={this.frequencies(h)}>{h}</sample> )
+				</model>
+			
 }
 
 class InvalidSampleSizeException(message:String) extends Throwable{}

@@ -2,6 +2,8 @@ package main.scala.jacopofar.smellslikelanguage
 
 import scala.io.Source
 import java.io.File
+import scala.xml.XML
+import java.net.URL
 
 object Assimilator {
 	def assimilateURL(URL:String,m:Model):Model={
@@ -23,24 +25,29 @@ object Assimilator {
 	}
 
 	def assimilateString(s:String,m:Model):Model={
-		var preparing:String="0"*m.n
-				for(c<-s){
-					if(c.isDigit){
-						preparing=preparing.substring(1)+'1'
-								m.add(preparing)
-					}
-					else
-						if(!m.ignorePunctuation || !(Model.punctuation.contains(c))){
-							preparing=preparing.substring(1)+c
-									m.add(preparing)		
+			var preparing:String="0"*m.n
+					for(c<-s){
+						if(c.isDigit){
+							preparing=preparing.substring(1)+'1'
+									m.add(preparing)
 						}
-				}
-
-	//we need to add some N-grams also for ending strings
-	for(k<-1 to m.n){
-		preparing=preparing.substring(1)+'0'
-				m.add(preparing)
+						else
+							if(!m.ignorePunctuation || !(Model.punctuation.contains(c))){
+								preparing=preparing.substring(1)+c
+										m.add(preparing)		
+							}
+					}
+	
+		//we need to add some samples also for ending strings
+		for(k<-1 to m.n){
+			preparing=preparing.substring(1)+'0'
+			m.add(preparing)
+		}
+		m
 	}
-	m
+	
+	def assimilateFeed(fURL:String,m:Model)={
+	  val feedXML=XML.load(new URL(fURL).openConnection().getInputStream());
+	     feedXML\"link" foreach {(lURL) =>assimilateURL(lURL.text,m)}
 	}
 }

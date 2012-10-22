@@ -42,7 +42,7 @@ class Model(val n:Int,val language:String) {
 			 * It also update squareSum, the square of the sum of counters used when calculating cosine similarity
 			 * */
 			def add(s:String)={
-				def square(x: Int) = { x * x }
+				def square(x: Int) = x*x 
 				squareSum-=square(frequencies.getOrElse(s, 0))
 				squareSum+=square(frequencies.getOrElse(s, 0)+1)
 				frequencies+= s->(frequencies.getOrElse(s, 0)+1)
@@ -59,13 +59,13 @@ class Model(val n:Int,val language:String) {
 					else
 						o.frequencies.keys.map(s=>o.frequencies(s)*frequencies.getOrElse(s, 0)).reduce((a,b)=>a+b)
 				)/math.sqrt(o.quickSquare*quickSquare)
-			
+			def similarity(s:String):Double=similarity(Assimilator.assimilateString(s,new Model(n,"")))
 
 			override def toString()="Model of "+language+" [sample size:"+n+" #samples:"+frequencies.size+"] sum of squares"+quickSquare+" ~ "+squareSum
 
 					def toXML()=
 				<model language={this.language} sampleSize={this.n.toString} squareSum={squareSum.toString}>
-				{frequencies.keys.map((h:String) => <sample count={this.frequencies(h).toString}>{h}</sample> )}
+				{frequencies.keys.map((h:String) => <sample count={frequencies(h).toString}>{h}</sample> )}
 				</model>
 
 }

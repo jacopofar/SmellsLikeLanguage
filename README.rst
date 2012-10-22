@@ -56,15 +56,14 @@ To recognize a language you have to:
 		val r=new Recognizer(List(gModel,iModel,jaModel,chModel))
 		r+=arModel
 		r.identifiedLanguage(Assimilator.assimilateString("来るものは拒まず去るものは追わず", new Model(2,"japanese proverb"))))
-Save a model
-============
-The Model class has the methods *toXML*,*fromXLMfile* and *fromXLMString* which allows to save and load a model using XML format.
-
+5. For lazy people, you can use identifiedLanguage directly on a string: r.identifiedLanguage("sono una persona pigra") will return "Italian"
+Save a model or a recognizer
+===========================
+The Model and the Recognizer class have the methods *toXML*,*fromXLMfile* and *fromXLMString* which allows to save and load a model or a recognizer using XML format.
 
 TO DO
 =====
 Write the code to:
 
 * generate gibberish statistically similar to the analyzed text
-* load/save XML for an entire recognizer and not just model
 

@@ -72,16 +72,17 @@ class Model(val n:Int,val language:String) {
 			def generateGibberish(length:Int)={
 			  //first, we need to count how many distinct characters are there
 			  //each character appears at least once in each position of the sample, if it appears at all, so we use just the first string
-				val continuations=new HashMap[String,HashMap[Char,Double]]()
-				frequencies.foreach(el=>continuations.getOrElse(el._1.substring(0, el._1.length()), new HashMap[Char,Double]).getOrElse(el._1.last, 0)+el._2)
+				val incipitCount=new HashMap[String,Int]()
 				val uc=new HashSet[Char]
-				frequencies.keySet.foreach(e=>uc.add(e.charAt(0)))
+				frequencies.keySet.foreach(e=>{uc.add(e.charAt(0));incipitCount.put(e.substring(0, e.length()-1),incipitCount.getOrElse(e.substring(0, e.length()-1), 0)+frequencies(e))})
+				
 				def randomNextCharacter(start:String):Char={
-				  val candidates=new HashMap[Char,Int]();
-				  frequencies.foreach(el=>if(el._1.startsWith(start)) candidates.getOrElse(el._1.charAt(start.length()), 0))
-				  'e'
+				  var nextIndex=math.random*(incipitCount.getOrElse(start, 0)+uc.size);
+				  while(nextIndex>0){
+				    
+				  }
 				}
-				//TODO continue
+				//TODO come farla in maniera decente?
 				
 			}
 

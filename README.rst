@@ -60,7 +60,8 @@ To recognize a language you have to:
 		r.identifiedLanguage(Assimilator.assimilateString("来るものは拒まず去るものは追わず", new Model(2,"japanese proverb"))))
 5. For lazy people, you can use identifiedLanguage directly on a string:
 		r.identifiedLanguage("sono una persona pigra")
-		will return "Italian"
+		
+		//will return "Italian"
 
 Save a model or a recognizer
 ===========================

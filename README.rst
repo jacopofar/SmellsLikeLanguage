@@ -47,6 +47,7 @@ To recognize a language you have to:
 2. Use the *Assimilator* static methods to assimilate content and train the model.
 	Assimilator.assimilateURL("it.wikipedia.org/wiki/Napoleone_Bonaparte",m)
 	Assimilator.assimilateURL("de.wikipedia.org/wiki/Napoleon_Bonaparte",g)
+	
 	Assimilator.assimilateString("ciao, come va?",m)
 	you can use different assimilators for a model
 3. Now you can confront two models with the **similarity** method of *Model*:
@@ -57,8 +58,11 @@ To recognize a language you have to:
 		r+=arModel
 		r.identifiedLanguage(Assimilator.assimilateString("来るものは拒まず去るものは追わず", new Model(2,"japanese proverb"))))
 5. For lazy people, you can use identifiedLanguage directly on a string: r.identifiedLanguage("sono una persona pigra") will return "Italian"
+
 Save a model or a recognizer
+
 ===========================
+
 The Model and the Recognizer class have the methods *toXML*,*fromXLMfile* and *fromXLMString* which allows to save and load a model or a recognizer using XML format.
 
 TO DO

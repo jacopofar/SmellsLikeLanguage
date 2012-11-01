@@ -3,6 +3,7 @@ package main.scala.jacopofar.smellslikelanguage
 import scala.collection.mutable.HashMap
 import scala.xml.XML
 import scala.io.Source
+import scala.collection.mutable.HashSet
 
 /**
  * Contains a model for a language.
@@ -67,6 +68,22 @@ class Model(val n:Int,val language:String) {
 				<model language={this.language} sampleSize={this.n.toString} squareSum={squareSum.toString}>
 				{frequencies.keys.map((h:String) => <sample count={frequencies(h).toString}>{h}</sample> )}
 				</model>
+			
+			def generateGibberish(length:Int)={
+			  //first, we need to count how many distinct characters are there
+			  //each character appears at least once in each position of the sample, if it appears at all, so we use just the first string
+				val continuations=new HashMap[String,HashMap[Char,Double]]()
+				frequencies.foreach(el=>continuations.getOrElse(el._1.substring(0, el._1.length()), new HashMap[Char,Double]).getOrElse(el._1.last, 0)+el._2)
+				val uc=new HashSet[Char]
+				frequencies.keySet.foreach(e=>uc.add(e.charAt(0)))
+				def randomNextCharacter(start:String):Char={
+				  val candidates=new HashMap[Char,Int]();
+				  frequencies.foreach(el=>if(el._1.startsWith(start)) candidates.getOrElse(el._1.charAt(start.length()), 0))
+				  'e'
+				}
+				//TODO continue
+				
+			}
 
 }
 

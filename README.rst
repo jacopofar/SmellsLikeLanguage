@@ -20,14 +20,14 @@ Download the package and run the command *sbt test* to test the application. It 
 
 Training
 ========
-When creating the model, you have to choose a sample size. A sample of 1 or 2 is sufficient for most of the cases, but increasing it you may obtain more accuracy.
+When creating the model, you have to choose a sample size. A sample of 1 or 2 is sufficient for most of the cases, but by increasing it you may obtain more accuracy.
 
-Thought, be careful to increase the training dataset (e.g.: give it more webpages or text files), especially when training for Chinese or Japanese since ideograms to manage the amount of possible character combinations.
+Thought, be careful to increase the training dataset (e.g.: give it more webpages or text files), especially when training for Chinese or Japanese since ideograms make necessary to manage a bigger amount of possible character combinations.
 
 **Programming languages:**
-The program can be used to recognize programming or markup languages, but consider that by default it ignores punctuation as defined in *Model.punctuation*.
+The program can be used to recognize programming or markup languages, but consider that by default it ignores punctuation signs defined in *Model.punctuation*.
 
-So, when comparing non-human languages, change *Model.ignorePunctuation* value before training. Consider that this value is used by the assimilator, so you can change it every time to decide  wheter or not to assimilate punctuation signs. If not, punctuation character will be ignored.
+So, when comparing non-human languages, change *Model.ignorePunctuation* value before training. Consider that this value is used by the assimilator, so you can change it every time you assimilate something to decide  wheter or not to assimilate punctuation signs **for that document**. If not, punctuation character will be ignored.
 
 **digits:**
 The program ignores digit values, converting any digit (0-9) to the digit 1.
@@ -55,12 +55,16 @@ To recognize a language you have to:
 		m.similarity(m) //return 1
 4. To make things easier you can use a Recognizer to confront many models
 		val r=new Recognizer(List(gModel,iModel,jaModel,chModel))
+		
 		r+=arModel
 		r.identifiedLanguage(Assimilator.assimilateString("来るものは拒まず去るものは追わず", new Model(2,"japanese proverb"))))
-5. For lazy people, you can use identifiedLanguage directly on a string: r.identifiedLanguage("sono una persona pigra") will return "Italian"
+5. For lazy people, you can use identifiedLanguage directly on a string:
+
+		r.identifiedLanguage("sono una persona pigra")
+		
+		will return "Italian"
 
 Save a model or a recognizer
-
 ===========================
 
 The Model and the Recognizer class have the methods *toXML*,*fromXLMfile* and *fromXLMString* which allows to save and load a model or a recognizer using XML format.

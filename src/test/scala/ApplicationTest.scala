@@ -16,7 +16,7 @@ class AssimilatorTest extends FunSuite {
 	test("assimilate URLs") {
 		Assimilator.assimilateURL("http://de.wikipedia.org/wiki/Napoleon_Bonaparte", new Model(5,"german"))
 	}
-	test("assimilateFeed"){
+	test("assimilate RSS feed"){
 		Assimilator.assimilateFeed("http://tinaleins.blogger.de/rss", new Model(3,"german"))
 	}
 }
@@ -28,8 +28,17 @@ class CosineTest extends FunSuite{
 	val iModel=new Model(3,"italian")
 	Assimilator.assimilateURL("http://it.wikipedia.org/wiki/Napoleone_Bonaparte", iModel)
 	Assimilator.assimilateURL("http://it.wikipedia.org/wiki/Fisarmonica", iModel)
+	test("generate gibberish.t"){
+	  val out= new BufferedWriter(new FileWriter("gibberish.txt"))
+		out.write(iModel.generateGibberish(50))
+		out.write(iModel.generateGibberish(50))
+		out.write(gModel.generateGibberish(50))
+		out.write(gModel.generateGibberish(50))
+		out.close();
 
-	test("compare a page of wikipedia") {
+	  
+	}
+	test("compare a page of Wikipedia") {
 
 		val c=new Model(3,"checkme")
 		Assimilator.assimilateURL("http://it.wikipedia.org/wiki/Idrogeno", c)

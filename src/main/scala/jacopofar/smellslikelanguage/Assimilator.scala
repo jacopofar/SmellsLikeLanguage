@@ -11,7 +11,6 @@ import java.nio.charset.CodingErrorAction
 object Assimilator {
 
 	def assimilateURL(URL:String,m:Model):Model={
-		//println("assimilating the URL "+URL)
 		assimilateString(Source.fromURL(URL)(new Codec(Codec.UTF8).onMalformedInput(CodingErrorAction.IGNORE)).getLines.mkString.replaceAll("""<[^<>]+>""", ""),m)
 	}
 

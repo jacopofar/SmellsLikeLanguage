@@ -37,7 +37,10 @@ The program has been designed to manage every language, and has been tested with
 Usage
 =====
 **For lazy people:**
-You can load the provided model (**TODO - REMOVE ME AFTER, MAIL ME IF I FORGOT**) with...
+You can load the provided model huge_regognizer.xml with contains 117 languages from the wikipedia editions with more than 1000 articles.
+
+The code to create this model is inside GenerateModel.scala.
+
 
 To recognize a language you have to:
 
@@ -68,9 +71,9 @@ Save a model or a recognizer
 
 The Model and the Recognizer class have the methods *toXML*,*fromXLMfile* and *fromXLMString* which allows to save and load a model or a recognizer using XML format.
 
-TO DO
-=====
-Write the code to:
+Generate text gibberish
+=======================
 
-* generate gibberish statistically similar to the analyzed text
+The program can generate a random text from a model using a genetic algorithm to find a string of a given length which fits better the language model.
 
+The approach is *far from perfection*, it's slow and give poor results, but it's still better than nothing.

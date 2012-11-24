@@ -4,6 +4,8 @@ import scala.collection.mutable.HashMap
 import scala.xml.XML
 import scala.io.Source
 import scala.collection.mutable.HashSet
+import scala.util.Random
+import scala.collection.mutable.MutableList
 
 /**
  * Contains a model for a language.
@@ -20,71 +22,100 @@ object Model{
 	//the character ' is not present since it is useful when detecting languages
 	val punctuation=".,;:-_!?$%&()“[]{}<>=@#*+\\/\"~`\n\r\t";
 	def fromXLMfile(fn:String):Model=fromXMLString(Source.fromFile(fn).mkString)
-	def fromXMLString(xs:String)={
+			def fromXMLString(xs:String)={
 		val xml=XML.loadString(xs)
-		var m=new Model((xml\\"@sampleSize").text.toInt,(xml\\"@language").text)
+				var m=new Model((xml\\"@sampleSize").text.toInt,(xml\\"@language").text)
 		m.squareSum=BigInt((xml\\"@squareSum").text)
 		for(val sample <- xml\\ "sample") {
 			m.frequencies+= sample.text->(sample\\"@count").text.toInt
 		}
 		m
 	}
+	val r=new Random()
 }
 class Model(val n:Int,val language:String) {
 	if (n<1) throw new InvalidSampleSizeException("The sample size has to be greater than 0");
 	var ignorePunctuation:Boolean=true
 			private var frequencies=new HashMap[String, Int]
-			//squareSum and quickSquare contain the same value in different formats
-			//squareSum is for XML record and retrieve, quickSquare for fast calculation
-			private var quickSquare:Double=0
-			private var squareSum:BigInt=0
-			/**
-			 * Increase of 1 the counter of a string presence, creating it if nonexistent
-			 * It also update squareSum, the square of the sum of counters used when calculating cosine similarity
-			 * */
-			def add(s:String)={
+					//squareSum and quickSquare contain the same value in different formats
+					//squareSum is for XML record and retrieve, quickSquare for fast calculation
+					private var quickSquare:Double=0
+					private var squareSum:BigInt=0
+					/**
+					 * Increase of 1 the counter of a string presence, creating it if nonexistent
+					 * It also update squareSum, the square of the sum of counters used when calculating cosine similarity
+					 * */
+					def add(s:String)={
 				def square(x: Int) = x*x 
-				squareSum-=square(frequencies.getOrElse(s, 0))
-				squareSum+=square(frequencies.getOrElse(s, 0)+1)
-				frequencies+= s->(frequencies.getOrElse(s, 0)+1)
-				quickSquare=squareSum.toDouble
+						squareSum-=square(frequencies.getOrElse(s, 0))
+						squareSum+=square(frequencies.getOrElse(s, 0)+1)
+						frequencies+= s->(frequencies.getOrElse(s, 0)+1)
+						quickSquare=squareSum.toDouble
 			}
 			def +=(s:String)=add(s:String)
-			
-			def size:Int=frequencies.size
+
+					def size:Int=frequencies.size
 
 
-			def similarity(o:Model):Double=
-				(if(frequencies.size<o.frequencies.size)
-					frequencies.keys.map(s=>frequencies(s)*o.frequencies.getOrElse(s, 0)).reduce((a,b)=>a+b)
-					else
-						o.frequencies.keys.map(s=>o.frequencies(s)*frequencies.getOrElse(s, 0)).reduce((a,b)=>a+b)
-				)/math.sqrt(o.quickSquare*quickSquare)
-			def similarity(s:String):Double=similarity(Assimilator.assimilateString(s,new Model(n,"")))
+					def similarity(o:Model):Double=
+					(if(frequencies.size<o.frequencies.size)
+						frequencies.keys.map(s=>frequencies(s)*o.frequencies.getOrElse(s, 0)).reduce((a,b)=>a+b)
+						else
+							o.frequencies.keys.map(s=>o.frequencies(s)*frequencies.getOrElse(s, 0)).reduce((a,b)=>a+b)
+							)/math.sqrt(o.quickSquare*quickSquare)
+							def similarity(s:String):Double=similarity(Assimilator.assimilateString(s,new Model(n,"")))
 
-			override def toString()="Model of "+language+" [sample size:"+n+" #samples:"+frequencies.size+"] sum of squares"+quickSquare+" ~ "+squareSum
+							override def toString()="Model of "+language+" [sample size:"+n+" #samples:"+frequencies.size+"] sum of squares"+quickSquare+" ~ "+squareSum
 
-					def toXML()=
-				<model language={this.language} sampleSize={this.n.toString} squareSum={squareSum.toString}>
-				{frequencies.keys.map((h:String) => <sample count={frequencies(h).toString}>{h}</sample> )}
-				</model>
-			
-			def generateGibberish(length:Int)={
-			  //first, we need to count how many distinct characters are there
-			  //each character appears at least once in each position of the sample, if it appears at all, so we use just the first string
-				val incipitCount=new HashMap[String,Int]()
-				val uc=new HashSet[Char]
-				frequencies.keySet.foreach(e=>{uc.add(e.charAt(0));incipitCount.put(e.substring(0, e.length()-1),incipitCount.getOrElse(e.substring(0, e.length()-1), 0)+frequencies(e))})
-				
-				def randomNextCharacter(start:String):Char={
-				  var nextIndex=math.random*(incipitCount.getOrElse(start, 0)+uc.size);
-				  while(nextIndex>0){
-				    
-				  }
-				}
-				//TODO come farla in maniera decente?
-				
-			}
+							def toXML()=
+						<model language={this.language} sampleSize={this.n.toString} squareSum={squareSum.toString}>
+						{frequencies.keys.map((h:String) => <sample count={frequencies(h).toString}>{h}</sample> )}
+						</model>
+
+						def generateGibberish(length:Int):String={
+//generate some random text gibberish statistically similar to the modeled language
+						  //to do so, it uses a genetic algorithm which generate a pool of random strings and at each generation
+						  //keep the ones with the highest similarity (with the language model), mutate and cross them preparing the next generation
+								val uc=new HashSet[Char]
+										
+										frequencies.keySet.foreach(e=>uc.add(e.charAt(0)))
+
+										val v=uc.toArray
+										
+										def randomString():String=((1 to length) map (w =>v(Model.r.nextInt(v.length)))).mkString("")
+										def crossString(a:String,b:String)={
+											var p=Model.r.nextInt(a.length()-1)+1
+													a.substring(0, p)+b.substring(p, b.length())
+										}
+										def mutateString(s:String)={
+											var p=Model.r.nextInt(s.length()-1)+1
+													s.substring(0,p-1)+v(Model.r.nextInt(v.length))+s.substring(p,s.length())
+										}
+
+										val pool=(1 to 100).map(w=>randomString).toArray
+												for(k<- 1 to (length*2+10)){
+													//sort the pool with similarity
+													pool.sortWith((a,b) => similarity(a)<similarity(b))
+													
+													//the first 15 are kept
+													//then 15 are mutations of the first ones
+													for(i<- 1 to 15){
+														pool(i+15)=mutateString(pool(i))
+													}
+													//then crossing over
+													for(i<- 30 to 80){
+														pool(i)=crossString(pool(Model.r.nextInt(10)),pool(Model.r.nextInt(10)))
+													}
+													//then 20 brand new strings
+													for(i<- 80 to 99){
+														pool(i)=randomString()
+													}
+													
+												}
+										//now after various geneations, let's take the best item
+
+										pool.maxBy(similarity(_))
+						}
 
 }
 

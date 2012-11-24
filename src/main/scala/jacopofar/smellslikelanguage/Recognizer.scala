@@ -8,10 +8,12 @@ import scala.io.Source
 class Recognizer(private var l:List[Model]) {
 	if (l.map(e=>e.n).exists(m=>m!=l.head.n))
 		throw new InvalidSampleSizeException("the recognizer needs models with the same sample size")
-
+	def apply(lang:String)={
+			l.filter(p=>p.language.equals(lang)).head
+	}
 	def identifiedLanguage(m:Model):String=ranking(m).reduce((a,b)=>if(a._2>b._2) a else b)._1
-	def identifiedLanguage(s:String):String=identifiedLanguage(Assimilator.assimilateString(s, new Model(l.head.n,"")))
-	def ranking(e:Model):HashMap[String,Double]={
+			def identifiedLanguage(s:String):String=identifiedLanguage(Assimilator.assimilateString(s, new Model(l.head.n,"")))
+			def ranking(e:Model):HashMap[String,Double]={
 			if(e.size==0) throw new EmptyModelException("Can't confront an empty model, use the assimilator to integrate text samples in the model")
 			var r=new HashMap[String,Double]()
 			var scoresum=0.0
@@ -35,9 +37,10 @@ class Recognizer(private var l:List[Model]) {
 		def toXML():Elem = <recognizer>{l.map(_.toXML)}</recognizer>
 
 }
+
 object Recognizer{
 	def fromXLMfile(fn:String):Recognizer=fromXMLString(Source.fromFile(fn).mkString)
-	def fromXMLString(xs:String)={
+			def fromXMLString(xs:String)={
 		val xml=XML.loadString(xs)
 				var r=new Recognizer(Nil)
 		for(val m <- xml\\ "model") {

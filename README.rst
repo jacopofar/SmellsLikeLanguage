@@ -31,16 +31,19 @@ So, when comparing non-human languages, change *Model.ignorePunctuation* value b
 
 **digits:**
 The program ignores digit values, converting any digit (0-9) to the digit 1.
+
 **non latin characters:**
 The program has been designed to manage every language, and has been tested with Chinese, Japanese and Arabic.
 
 Usage
 =====
 **For lazy people:**
-You can load the provided model huge_regognizer.xml with contains 117 languages from the wikipedia editions with more than 1000 articles.
+You can load the provided model huge_regognizer.xml, created with GenerateModel.scala, which contains 117 languages from the wikipedia editions with more than 1000 articles.
 
-The code to create this model is inside GenerateModel.scala.
-
+	val r=Recognizer.fromXLMfile("huge_recognizer.xml")
+	r.identifiedLanguage("Ofte premilo estas parto de ia aparato, sed ankaŭ estadas premiloj kiel apartaj iloj")
+	
+will return "Esperanto"
 
 To recognize a language you have to:
 
@@ -50,8 +53,8 @@ To recognize a language you have to:
 2. Use the *Assimilator* static methods to assimilate content and train the model.
 	Assimilator.assimilateURL("it.wikipedia.org/wiki/Napoleone_Bonaparte",m)
 	Assimilator.assimilateURL("de.wikipedia.org/wiki/Napoleon_Bonaparte",g)
-	
 	Assimilator.assimilateString("ciao, come va?",m)
+	
 	you can use different assimilators for a model
 3. Now you can confront two models with the **similarity** method of *Model*:
 		m.similarity(g) //return a number like 0.2
@@ -59,11 +62,9 @@ To recognize a language you have to:
 4. To make things easier you can use a Recognizer to confront many models
 		val r=new Recognizer(List(gModel,iModel,jaModel,chModel))
 		r+=arModel
-		
 		r.identifiedLanguage(Assimilator.assimilateString("来るものは拒まず去るものは追わず", new Model(2,"japanese proverb"))))
-5. For lazy people, you can use identifiedLanguage directly on a string:
+5. Or you can use identifiedLanguage directly on a string:
 		r.identifiedLanguage("sono una persona pigra")
-		
 		//will return "Italian"
 
 Save a model or a recognizer

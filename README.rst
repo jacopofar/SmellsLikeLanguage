@@ -41,6 +41,7 @@ Usage
 You can load the provided model huge_regognizer.xml, created with GenerateModel.scala, which contains 117 languages from the wikipedia editions with more than 1000 articles.
 
 	val r=Recognizer.fromXLMfile("huge_recognizer.xml")
+	
 	r.identifiedLanguage("Ofte premilo estas parto de ia aparato, sed ankaŭ estadas premiloj kiel apartaj iloj")
 	
 will return "Esperanto"

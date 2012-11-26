@@ -73,7 +73,7 @@ To recognize a language you have to:
 Save a model or a recognizer
 ===========================
 
-The Model and the Recognizer class have the methods *toXML*,*fromXLMfile* and *fromXLMString* which allows to save and load a model or a recognizer using XML format.
+The Model and the Recognizer class have the methods *toXML*, *fromXLMfile* and *fromXLMString* which allows to save and load a model or a recognizer using XML format.
 
 Generate text gibberish
 =======================

@@ -62,7 +62,9 @@ To recognize a language you have to:
 		m.similarity(m) //return 1
 4. To make things easier you can use a Recognizer to confront many models
 		val r=new Recognizer(List(gModel,iModel,jaModel,chModel))
+
 		r+=arModel
+
 		r.identifiedLanguage(Assimilator.assimilateString("来るものは拒まず去るものは追わず", new Model(2,"japanese proverb"))))
 5. Or you can use identifiedLanguage directly on a string:
 		r.identifiedLanguage("sono una persona pigra")

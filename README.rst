@@ -104,9 +104,9 @@ where '0' is used as a placeholder for text boundaries.
 
 The frequency vectors of two texts can be compared through cosine similarity, that is the dot product of the two frequency vectors divided by the product of magnitudes.
 
-This value is a number between 0 (no common values) and 1 (identical frequencies ratio), the program takes the highest similarity to decide which is the language of a given text.
+This value is a number between 0 (no common values) and 1 (identical frequencies ratios), the program takes the highest similarity to decide which is the language of a given text, comparing it with text collections of various languages.
 
-Usually, this kind of analysis is done using a Markov model, which is based on *transistions* between characters more than their frequencies. There's not a big difference, it's possible to transform one model in the other, the advantage of cosine similarity is the ease of confronting models.
+Usually, this kind of analysis is done using a Markov model, which is based on *transitions* between characters instead of the sequences frequency. There's not a big difference, it's possible to transform one model in the other, the advantage of cosine similarity is the ease of confronting models.
 
 Futher improvements and applications
 ======================================

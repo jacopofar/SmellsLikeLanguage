@@ -101,7 +101,8 @@ For example:
 "ni"=1
 "i0"=1
 where '0' is used as a placeholder for text boundaries.
-the frequency vectors of two texts can be compared through cosine similarity, that is the dot product of the two frequency vectors divided by the product of magnitudes.
+
+The frequency vectors of two texts can be compared through cosine similarity, that is the dot product of the two frequency vectors divided by the product of magnitudes.
 
 This value is a number between 0 (no common values) and 1 (identical frequencies ratio), the program takes the highest similarity to decide which is the language of a given text.
 

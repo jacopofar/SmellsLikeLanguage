@@ -38,7 +38,7 @@ The program has been designed to manage every language, and has been tested with
 Usage
 =====
 **For lazy people:**
-You can load the provided model huge_regognizer.xml, created with GenerateModel.scala, which contains 117 languages from the wikipedia editions with more than 1000 articles.
+You can load the provided model huge_regognizer.xml, created with GenerateModel.scala, which contains 117 languages from the wikipedia editions with more than 10000 articles.
 
 	val r=Recognizer.fromXLMfile("huge_recognizer.xml")
 	
@@ -63,7 +63,9 @@ To recognize a language you have to:
 		m.similarity(m) //return 1
 4. To make things easier you can use a Recognizer to confront many models
 		val r=new Recognizer(List(gModel,iModel,jaModel,chModel))
+
 		r+=arModel
+
 		r.identifiedLanguage(Assimilator.assimilateString("来るものは拒まず去るものは追わず", new Model(2,"japanese proverb"))))
 5. Or you can use identifiedLanguage directly on a string:
 		r.identifiedLanguage("sono una persona pigra")
@@ -72,7 +74,7 @@ To recognize a language you have to:
 Save a model or a recognizer
 ===========================
 
-The Model and the Recognizer class have the methods *toXML*,*fromXLMfile* and *fromXLMString* which allows to save and load a model or a recognizer using XML format.
+The Model and the Recognizer class have the methods *toXML*, *fromXLMfile* and *fromXLMString* which allows to save and load a model or a recognizer using XML format.
 
 Generate text gibberish
 =======================
@@ -80,3 +82,36 @@ Generate text gibberish
 The program can generate a random text from a model using a genetic algorithm to find a string of a given length which fits better the language model.
 
 The approach is *far from perfection*, it's slow and give poor results, but it's still better than nothing.
+
+How does it work?
+=================
+
+The application extract all substrings of contiguous characters of length N from a text and generate a frequency vector.
+For example:
+
+"nonno nanni" with N=2 becomes
+
+"0n"=1
+"no"=2
+"on"=1
+"o "=1
+" n"=1
+"na"=1
+"an"=1
+"nn"=1
+"ni"=1
+"i0"=1
+where '0' is used as a placeholder for text boundaries.
+
+The frequency vectors of two texts can be compared through cosine similarity, that is the dot product of the two frequency vectors divided by the product of magnitudes.
+
+This value is a number between 0 (no common values) and 1 (identical frequencies ratios), the program takes the highest similarity to decide which is the language of a given text, comparing it with text collections of various languages.
+
+Usually, this kind of analysis is done using a Markov model, which is based on *transitions* between characters instead of the sequences frequency. There's not a big difference, it's possible to transform one model in the other, the advantage of cosine similarity is the ease of confronting models.
+
+Futher improvements and applications
+======================================
+The program could be made lighter by reducing the vector size, for example by using an hashing functions to map different elements to the same frequency.
+Instead of a generic string hash it could be possible to analyze a dataset (like huge_recognizer.xml) to create an ad-hoc function to reduce information loss in this case, for example by using SVD to reduce the number of dimensions.
+
+It could be interesting to use a self organizing map or other ML techniques to get a graphical visualization of similar languages.

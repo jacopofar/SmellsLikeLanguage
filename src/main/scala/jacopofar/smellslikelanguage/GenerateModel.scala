@@ -134,8 +134,8 @@ object GenerateModel {
 				for(k<-langs){
 					println("assimilating language "+k._1)
 					val m=new Model(3,k._1)
-					for(x<- 1 to 20){
-						println("reading page "+x+" of 20...")
+					for(x<- 1 to 40){
+						println("reading page "+x+" of 40...")
 						Assimilator.assimilateURL("http://"+k._2+".wikipedia.org/wiki/Special:Random?printable=yes", m)
 					}
 					r+=m

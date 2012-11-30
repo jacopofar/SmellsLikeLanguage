@@ -8,7 +8,7 @@ object GenerateModel {
 	def main(argc:Array[String])={
 		//a map with a list of languages and their language code used for Wikipedia
 		//see https://meta.wikimedia.org/wiki/List_of_Wikipedias
-		//it contains all the languages having a wiki with more than 10000 articles
+		//it contains all the languages having a wiki with more than 10000 articles (it includes simple english)
 		val langs=List(
 				"English"->"en",
 				"German"->"de",
@@ -129,19 +129,20 @@ object GenerateModel {
 				"Mazandarani"->"mzn",
 				"Min Nan"->"zh-min-nan"
 				)
-				//create an empty Recognizer
-				val r=new Recognizer(List())
-				for(k<-langs){
-					println("assimilating language "+k._1)
-					val m=new Model(3,k._1)
-					for(x<- 1 to 40){
-						println("reading page "+x+" of 40...")
-						Assimilator.assimilateURL("http://"+k._2+".wikipedia.org/wiki/Special:Random?printable=yes", m)
-					}
-					r+=m
-					val out= new BufferedWriter(new FileWriter("huge_recognizer.xml"))
-					out.write(new PrettyPrinter(80,2).format(r.toXML));
-					out.close()
+			//create an empty Recognizer
+			val r=new Recognizer(List())
+			for(k<-langs){
+				println("assimilating language "+k._1)
+				val m=new Model(3,k._1)
+				for(x<- 1 to 40){
+					println("reading page "+x+" of 40...")
+					Assimilator.assimilateURL("http://"+k._2+".wikipedia.org/wiki/Special:Random?printable=yes", m)
 				}
+				r+=m
+			}
+			val out= new BufferedWriter(new FileWriter("huge_recognizer.xml"))
+			out.write(new PrettyPrinter(80,2).format(r.toXML));
+			out.close()
+
 	}
 }

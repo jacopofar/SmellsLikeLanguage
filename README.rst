@@ -54,6 +54,7 @@ To recognize a language you have to:
 2. Use the *Assimilator* static methods to assimilate content and train the model.
 	Assimilator.assimilateURL("it.wikipedia.org/wiki/Napoleone_Bonaparte",m)
 	Assimilator.assimilateURL("de.wikipedia.org/wiki/Napoleon_Bonaparte",g)
+	
 	Assimilator.assimilateString("ciao, come va?",m)
 	
 	you can use different assimilators for a model

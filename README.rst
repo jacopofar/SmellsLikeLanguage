@@ -44,7 +44,7 @@ You can load the provided model huge_regognizer.xml, created with GenerateModel.
 	
 	r.identifiedLanguage("Ofte premilo estas parto de ia aparato, sed ankaŭ estadas premiloj kiel apartaj iloj")
 	
-will return "Esperanto"
+will return "Esperanto". Please note that for little statements this model is likely to fail due to the great amount of languages it can get confused with. If you know which languages you have to detect, create your own model or strip unnecessary ones from huge_recognizer.xml.
 
 To recognize a language you have to:
 

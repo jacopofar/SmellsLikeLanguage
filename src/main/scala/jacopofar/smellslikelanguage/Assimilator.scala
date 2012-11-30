@@ -13,7 +13,6 @@ object Assimilator {
 	def assimilateURL(URL:String,m:Model):Model={
 		assimilateString(Source.fromURL(URL)(new Codec(Codec.UTF8).onMalformedInput(CodingErrorAction.IGNORE)).getLines.mkString.replaceAll("""<[^<>]+>""", ""),m)
 	}
-
 	def assimilateFile(path:String, m:Model):Model={
 		val source = Source.fromFile(path)
 		val content:String = source.mkString

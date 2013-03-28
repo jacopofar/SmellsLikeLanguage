@@ -109,7 +109,7 @@ This value is a number between 0 (no common values) and 1 (identical frequencies
 
 Usually, this kind of analysis is done using a Markov model, which is based on *transitions* between characters instead of the sequences frequency. There's not a big difference, it's possible to transform one model in the other, the advantage of cosine similarity is the ease of confronting models.
 
-Futher improvements and applications
+Further improvements and applications
 ======================================
 The program could be made lighter by reducing the vector size, for example by using an hashing functions to map different elements to the same frequency.
 Instead of a generic string hash it could be possible to analyze a dataset (like huge_recognizer.xml) to create an ad-hoc function to reduce information loss in this case, for example by using SVD to reduce the number of dimensions.

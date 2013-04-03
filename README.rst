@@ -5,12 +5,12 @@ A Scala language identifier. Reads text in different human languages (or other l
 
 The comparison of two models is based on cosine similarity of the two vectors containing all the samples of analyzed text of a specified size.
 
-It can assimilate text in three ways:
+It can assimilate text in four ways:
 
-* from text files
+* From plain text files
 * From folders of text files, recursively
 * From URLs, by downloading webpages, stripping HTML tags and extracting text
-* From RSS feeds, following all links inside <link> tags
+* From RSS feeds, following all links inside <link> tags and parsing the pages
 
 Installation
 ============
@@ -20,14 +20,14 @@ Download the package and run the command *sbt test* to test the application. It 
 
 Training
 ========
-When creating the model, you have to choose a sample size. A sample of 1 or 2 is sufficient for most of the cases, but by increasing it you may obtain more accuracy.
+When creating the model, you have to choose a sample size. A sample of 1 or 2 is sufficient for most of the cases, but by increasing it you may obtain more accuracy at the cost of a bigger model.
 
 Thought, be careful to increase the training dataset (e.g.: give it more webpages or text files), especially when training for Chinese or Japanese since ideograms make necessary to manage a bigger amount of possible character combinations.
 
 **Programming languages:**
 The program can be used to recognize programming or markup languages, but consider that by default it ignores punctuation signs defined in *Model.punctuation*.
 
-So, when comparing non-human languages, change *Model.ignorePunctuation* value before training. Consider that this value is used by the assimilator, so you can change it every time you assimilate something to decide  wheter or not to assimilate punctuation signs **for that document**. If not, punctuation character will be ignored.
+So, when comparing non-human languages, change *Model.ignorePunctuation* value before training. Consider that this value is used by the assimilator, so you can change it every time you assimilate something to decide  wheter or not to assimilate punctuation signs **for that document**. If not, punctuation characters will be ignored.
 
 **digits:**
 The program ignores digit values, converting any digit (0-9) to the digit 1.
